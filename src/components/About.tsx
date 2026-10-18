@@ -1,5 +1,6 @@
 import { profile } from '../data/profile'
 import { Reveal } from './Reveal'
+import { SplitText } from './SplitText'
 
 export function About() {
   return (
@@ -9,8 +10,11 @@ export function About() {
           <p className="eyebrow">
             <span className="accent">/02</span> About
           </p>
-          <h2 className="section__title">
-            Careful by <em>default</em>
+          <h2 className="section__title" aria-label="Careful by default">
+            <SplitText text="Careful by" />{' '}
+            <em>
+              <SplitText text="default" offset={2} />
+            </em>
           </h2>
         </div>
       </Reveal>

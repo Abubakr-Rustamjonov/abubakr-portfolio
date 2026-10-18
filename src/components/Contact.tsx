@@ -1,24 +1,53 @@
 import { profile } from '../data/profile'
 import { Arrow } from './Arrow'
 import { Reveal } from './Reveal'
+import { SplitText } from './SplitText'
 
 export function Contact() {
   const [emailLocal, emailDomain] = profile.email.split('@')
 
   return (
     <section className="contact" id="contact">
+      <div className="orbit" aria-hidden="true">
+        <svg viewBox="0 0 140 140">
+          <defs>
+            <path
+              id="orbit-path"
+              d="M70,70 m-54,0 a54,54 0 1,1 108,0 a54,54 0 1,1 -108,0"
+            />
+          </defs>
+          <text className="orbit__text">
+            <textPath href="#orbit-path" startOffset="0">
+              OPEN FOR WORK · LET’S BUILD SOMETHING ·
+            </textPath>
+          </text>
+        </svg>
+        <span className="orbit__center">
+          <Arrow />
+        </span>
+      </div>
+
       <Reveal>
         <p className="eyebrow">
           <span className="accent">/03</span> Contact
         </p>
 
-        <h2 className="contact__title">
-          Have something
-          <br />
-          <em>worth building?</em>
+        <h2 className="contact__title" aria-label="Have something worth building?">
+          <span className="contact__title-line">
+            <SplitText text="Have something" />
+          </span>
+          <span className="contact__title-line">
+            <em>
+              <SplitText text="worth building?" offset={2} />
+            </em>
+          </span>
         </h2>
 
-        <a className="contact__mail" href={`mailto:${profile.email}`}>
+        <a
+          className="contact__mail"
+          href={`mailto:${profile.email}`}
+          aria-label={profile.email}
+        >
           <span className="contact__mail-text">
             {emailLocal}
             {emailDomain ? (

@@ -1,5 +1,6 @@
 import { profile } from '../data/profile'
 import { Arrow } from './Arrow'
+import { Magnetic } from './Magnetic'
 
 const github = profile.socials.find((social) => social.label === 'GitHub')
 
@@ -19,16 +20,18 @@ export function Nav() {
         </nav>
 
         {github ? (
-          <a
-            className="nav__cta"
-            href={github.href}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub profile"
-          >
-            <span className="nav__cta-label">GitHub</span>
-            <Arrow className="nav__arrow" />
-          </a>
+          <Magnetic strength={0.18}>
+            <a
+              className="nav__cta"
+              href={github.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub profile"
+            >
+              <span className="nav__cta-label">GitHub</span>
+              <Arrow className="nav__arrow" />
+            </a>
+          </Magnetic>
         ) : null}
       </div>
     </header>

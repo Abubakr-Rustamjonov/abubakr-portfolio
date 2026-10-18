@@ -123,6 +123,18 @@ button {
   top: 16px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- shared type ---------- */
 
 .eyebrow {
@@ -190,6 +202,108 @@ button {
 }
 
 .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- motion layer ---------- */
+
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.scroll-progress__bar {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), #ffb36b 55%, #7bd1c1);
+  box-shadow: 0 0 18px rgba(255, 92, 53, 0.55);
+}
+
+.cursor-fx {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor-fx {
+    display: block;
+  }
+}
+
+.cursor-fx__dot,
+.cursor-fx__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+}
+
+.cursor-fx__dot {
+  width: 5px;
+  height: 5px;
+  background: var(--bone);
+  mix-blend-mode: difference;
+  z-index: 1002;
+}
+
+.cursor-fx__ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(241, 238, 231, 0.35);
+  z-index: 1001;
+  transition:
+    width 0.3s var(--ease),
+    height 0.3s var(--ease),
+    border-color 0.3s ease,
+    background 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.cursor-fx__ring.is-active {
+  width: 58px;
+  height: 58px;
+  border-color: rgba(255, 92, 53, 0.7);
+  background: rgba(255, 92, 53, 0.08);
+}
+
+.magnetic {
+  display: inline-flex;
+  transition: transform 0.45s var(--ease);
+  will-change: transform;
+}
+
+.split {
+  display: inline;
+}
+
+.split__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  padding-right: 0.04em;
+  margin-right: -0.04em;
+}
+
+.split__inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 110%, 0) rotate(3deg);
+  transition:
+    transform 0.95s var(--ease),
+    opacity 0.5s ease;
+  transition-delay: calc(var(--i, 0) * 65ms);
+}
+
+.reveal.is-visible .split__inner {
   opacity: 1;
   transform: none;
 }
@@ -298,6 +412,36 @@ button {
   isolation: isolate;
 }
 
+.hero__orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: orbFloat 20s ease-in-out infinite alternate;
+}
+
+.hero__orb--one {
+  width: min(52vw, 680px);
+  height: min(52vw, 680px);
+  left: -12%;
+  top: -18%;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 92, 53, 0.55), transparent 66%);
+}
+
+.hero__orb--two {
+  width: min(42vw, 560px);
+  height: min(42vw, 560px);
+  right: -8%;
+  top: 8%;
+  background: radial-gradient(circle at 50% 50%, rgba(123, 209, 193, 0.4), transparent 68%);
+  animation-duration: 26s;
+  animation-direction: alternate-reverse;
+}
+
 .hero__glow {
   position: absolute;
   inset: -20%;
@@ -323,12 +467,16 @@ button {
   opacity: 0.5;
   mask-image: radial-gradient(90% 75% at 50% 40%, #000 20%, transparent 78%);
   -webkit-mask-image: radial-gradient(90% 75% at 50% 40%, #000 20%, transparent 78%);
+  transform: translate3d(0, calc(var(--sy, 0) * 0.1px), 0);
+  will-change: transform;
 }
 
 .hero__inner {
   width: 100%;
   max-width: var(--max);
   margin: 0 auto;
+  opacity: var(--fade, 1);
+  will-change: opacity;
 }
 
 .hero__meta {
@@ -378,15 +526,26 @@ button {
   letter-spacing: -0.05em;
   display: flex;
   flex-direction: column;
+  perspective: 900px;
+  transform: translate3d(0, calc(var(--sy, 0) * 0.04px), 0);
+  will-change: transform;
 }
 
 .hero__line {
   display: block;
-  animation: rise 1.05s var(--ease) both;
 }
 
-.hero__line:nth-child(2) {
-  animation-delay: 0.12s;
+.char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  animation: charIn 1s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 42ms + 140ms);
+  will-change: transform, opacity;
+}
+
+.char--accent {
+  color: var(--accent);
 }
 
 .hero__line--serif {
@@ -399,9 +558,6 @@ button {
   color: var(--bone-dim);
 }
 
-.hero__line--serif em {
-  color: var(--accent);
-}
 
 .hero__foot {
   display: grid;
@@ -428,6 +584,7 @@ button {
 }
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -439,10 +596,41 @@ button {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
   transition:
     background 0.25s ease,
     border-color 0.25s ease,
     color 0.25s ease;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(241, 238, 231, 0.16) 50%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.75s var(--ease);
+  pointer-events: none;
+}
+
+.btn:hover::before {
+  transform: translateX(130%);
+}
+
+.btn--solid::before {
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    rgba(8, 8, 10, 0.18) 50%,
+    transparent 65%
+  );
 }
 
 .btn:hover {
@@ -522,6 +710,8 @@ button {
   width: 1px;
   height: 54px;
   background: linear-gradient(var(--muted), transparent);
+  transform-origin: top;
+  animation: railPulse 3.4s var(--ease) infinite;
 }
 
 /* ---------- marquee ---------- */
@@ -581,6 +771,7 @@ button {
   border-radius: 20px;
   background: linear-gradient(180deg, var(--ink-2), var(--ink));
   overflow: hidden;
+  perspective: 1200px;
   transition:
     transform 0.5s var(--ease),
     border-color 0.4s ease,
@@ -595,6 +786,38 @@ button {
 
 .card--featured {
   grid-column: 1 / -1;
+}
+
+.tilt {
+  position: relative;
+  height: 100%;
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease);
+  will-change: transform;
+}
+
+.tilt.is-tilting {
+  transition-duration: 0.08s;
+}
+
+.card__glare {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.16),
+    transparent 65%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+}
+
+.card:hover .card__glare {
+  opacity: 1;
 }
 
 .card__link {
@@ -694,6 +917,7 @@ button {
   line-height: 1;
   color: var(--card-accent);
   transform: rotate(-5deg);
+  animation: glyphFloat 7s ease-in-out infinite;
   transition: transform 0.7s var(--ease);
   text-shadow: 0 20px 60px color-mix(in srgb, var(--card-accent) 35%, transparent);
 }
@@ -992,6 +1216,54 @@ button {
   letter-spacing: -0.045em;
 }
 
+.contact__title-line {
+  display: block;
+}
+
+.orbit {
+  position: absolute;
+  top: clamp(90px, 13vw, 170px);
+  right: var(--pad);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  pointer-events: none;
+}
+
+.orbit > svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: center;
+  animation: spin 26s linear infinite;
+}
+
+.orbit__text {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 7.2px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.orbit__center {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--accent);
+}
+
+.orbit__center svg {
+  width: 14px;
+  height: 14px;
+}
+
 .contact__title em {
   font-family: var(--serif);
   font-style: italic;
@@ -1136,14 +1408,56 @@ button {
 
 /* ---------- motion ---------- */
 
-@keyframes rise {
-  from {
+@keyframes charIn {
+  0% {
     opacity: 0;
-    transform: translateY(110%);
+    transform: translate3d(0, 0.75em, 0) rotateX(-75deg) rotate(4deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes orbFloat {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
   }
   to {
+    transform: translate3d(7%, -5%, 0) scale(1.18);
+  }
+}
+
+@keyframes glyphFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+
+@keyframes railPulse {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  40% {
     opacity: 1;
-    transform: translateY(0);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -1204,6 +1518,10 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .orbit {
+    display: none;
+  }
+
   .about__side {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1260,8 +1578,12 @@ button {
     gap: 14px;
   }
 
-  .hero__actions .btn {
+  .hero__actions .magnetic {
     flex: 1 1 auto;
+  }
+
+  .hero__actions .magnetic .btn {
+    width: 100%;
     justify-content: center;
   }
 
@@ -1307,19 +1629,33 @@ button {
     scroll-behavior: auto;
   }
 
-  .hero__line,
+  .char,
   .hero__meta,
   .hero__lede,
   .hero__actions,
   .hero__facts,
+  .hero__orb,
+  .hero__rail-line,
+  .orbit > svg,
+  .card__glyph,
   .marquee__track {
     animation: none;
+  }
+
+  .char {
+    opacity: 1;
+    transform: none;
   }
 
   .reveal {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .split__inner {
+    opacity: 1;
+    transform: none;
   }
 
   *,

@@ -51,7 +51,14 @@ Cloudflare Pages, or a custom domain without changes.
 ```
 ├── public/favicon.svg
 ├── src/
-│   ├── components/   # Nav, Hero, Marquee, Work, About, Contact, Footer, Reveal
+│   ├── components/   # Nav, Hero, Marquee, Work, About, Contact, Footer
+│   │   ├── Reveal.tsx       # scroll-triggered fade-up wrapper
+│   │   ├── SplitText.tsx    # masked word-by-word headings
+│   │   ├── Tilt.tsx         # 3D pointer tilt + glare
+│   │   ├── Magnetic.tsx     # pointer-magnet buttons
+│   │   ├── Cursor.tsx       # trailing cursor ring
+│   │   └── ScrollProgress.tsx
+│   ├── hooks/useReducedMotion.ts
 │   ├── data/profile.ts
 │   ├── App.tsx
 │   ├── main.tsx
@@ -60,8 +67,27 @@ Cloudflare Pages, or a custom domain without changes.
 └── vite.config.ts
 ```
 
+## Motion
+
+All motion is hand-built with CSS and small React hooks — no animation library.
+
+- **Kinetic hero** — per-letter 3D entrance, pointer-reactive gradient field, drifting orbs,
+  and scroll parallax/fade.
+- **Scroll progress** — a gradient bar tracks reading progress above the nav.
+- **Masked headings** — words slide up out of a mask when each section enters view.
+- **3D project cards** — tilt toward the pointer with a moving glare and a floating glyph.
+- **Magnetic buttons** — primary links pull gently toward the cursor.
+- **Trailing cursor** — a soft ring lags behind the pointer and expands over links.
+- **Rotating badge** — the contact section carries a continuously orbiting availability seal.
+
+The motion layer is opt-in where it makes sense: pointer effects only run on fine pointers,
+and every effect is disabled under `prefers-reduced-motion`.
+
 ## Accessibility & performance
 
 - Semantic landmarks, skip link, visible focus states, `aria-hidden` on decoration.
-- `prefers-reduced-motion` disables reveals, marquee and entrance animations.
-- System font fallbacks, no images to download, CSS-only visuals.
+- Split headings expose their full text via `aria-label`; the hero has a screen-reader-only
+  headline so animated letters never garble the page outline.
+- `prefers-reduced-motion` disables reveals, kinetic type, cursor, tilt, orbs and marquee.
+- Animations use transform/opacity, with scroll and pointer work batched into
+  `requestAnimationFrame`; system font fallbacks and CSS-only visuals keep the payload light.

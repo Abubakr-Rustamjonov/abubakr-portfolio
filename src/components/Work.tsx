@@ -2,6 +2,8 @@ import type { CSSProperties } from 'react'
 import { profile, type Project } from '../data/profile'
 import { Arrow } from './Arrow'
 import { Reveal } from './Reveal'
+import { SplitText } from './SplitText'
+import { Tilt } from './Tilt'
 
 function Preview({ project, accent }: { project: Project; accent: string }) {
   return (
@@ -28,23 +30,26 @@ function Preview({ project, accent }: { project: Project; accent: string }) {
 function Card({ project, accent, featured }: { project: Project; accent: string; featured: boolean }) {
   return (
     <Reveal className={featured ? 'card card--featured' : 'card'}>
-      <a className="card__link" href={project.href} target="_blank" rel="noreferrer">
-        <Preview project={project} accent={accent} />
-        <div className="card__body">
-          <p className="card__index">/{project.index}</p>
-          <h3 className="card__title">{project.title}</h3>
-          <p className="card__blurb">{project.blurb}</p>
-          <ul className="card__tags">
-            {project.tags.map((tag) => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
-          <span className="card__cta">
-            View project
-            <Arrow className="card__arrow" />
-          </span>
-        </div>
-      </a>
+      <Tilt>
+        <a className="card__link" href={project.href} target="_blank" rel="noreferrer">
+          <Preview project={project} accent={accent} />
+          <div className="card__body">
+            <p className="card__index">/{project.index}</p>
+            <h3 className="card__title">{project.title}</h3>
+            <p className="card__blurb">{project.blurb}</p>
+            <ul className="card__tags">
+              {project.tags.map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
+            <span className="card__cta">
+              View project
+              <Arrow className="card__arrow" />
+            </span>
+          </div>
+        </a>
+        <span className="card__glare" aria-hidden="true" />
+      </Tilt>
     </Reveal>
   )
 }
@@ -59,8 +64,11 @@ export function Work() {
           <p className="eyebrow">
             <span className="accent">/01</span> Selected work
           </p>
-          <h2 className="section__title">
-            Things I&rsquo;ve <em>built</em>
+          <h2 className="section__title" aria-label="Things I’ve built">
+            <SplitText text="Things I’ve" />{' '}
+            <em>
+              <SplitText text="built" offset={2} />
+            </em>
           </h2>
           <p className="section__note">
             A few projects that show how I think about product, performance and the small details.
