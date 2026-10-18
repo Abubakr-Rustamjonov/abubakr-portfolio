@@ -29,8 +29,8 @@ Everything people read lives in one file: [`src/data/profile.ts`](src/data/profi
 | `skills`, `experience` | About panels |
 | `marquee` | Scrolling technology strip |
 
-> **Placeholders to replace:** the email address, GitHub/LinkedIn URLs, and the three
-> sample projects are examples only. Update them before sharing the link.
+> **Placeholders to replace:** the GitHub/LinkedIn URLs and the three sample projects
+> are examples only. Update them before sharing the link.
 
 Design tokens (colors, fonts, spacing) are at the top of [`src/styles.css`](src/styles.css).
 Swap `--accent` to re-theme the whole site.

@@ -3,6 +3,8 @@ import { Arrow } from './Arrow'
 import { Reveal } from './Reveal'
 
 export function Contact() {
+  const [emailLocal, emailDomain] = profile.email.split('@')
+
   return (
     <section className="contact" id="contact">
       <Reveal>
@@ -17,7 +19,14 @@ export function Contact() {
         </h2>
 
         <a className="contact__mail" href={`mailto:${profile.email}`}>
-          <span className="contact__mail-text">{profile.email}</span>
+          <span className="contact__mail-text">
+            {emailLocal}
+            {emailDomain ? (
+              <>
+                <wbr />@{emailDomain}
+              </>
+            ) : null}
+          </span>
           <span className="contact__mail-icon" aria-hidden="true">
             <Arrow />
           </span>

@@ -33,7 +33,7 @@ export const profile = {
   role: 'Software Engineer',
   available: true,
   location: 'Remote — worldwide',
-  email: 'hello@abubakr.dev',
+  email: 'abubakrrustamjonov797@gmail.com',
   lede:
     'I design and build fast, accessible web products — from the first sketch to the last deploy.',
   bio: [
@@ -43,7 +43,7 @@ export const profile = {
   socials: [
     { label: 'GitHub', href: 'https://github.com/abubakr' },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/abubakr' },
-    { label: 'Email', href: 'mailto:hello@abubakr.dev' },
+    { label: 'Email', href: 'mailto:abubakrrustamjonov797@gmail.com' },
   ] satisfies Social[],
   projects: [
     {

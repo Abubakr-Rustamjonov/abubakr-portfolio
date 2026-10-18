@@ -8,7 +8,7 @@ export function Nav() {
     <header className="nav">
       <div className="nav__inner">
         <a className="nav__logo" href="#top" aria-label={`${profile.name} — back to top`}>
-          {profile.name.toLowerCase()}
+          {profile.name}
           <span className="nav__dot">.</span>
         </a>
 
